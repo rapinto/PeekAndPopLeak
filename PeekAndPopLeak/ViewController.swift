@@ -9,6 +9,14 @@ import UIKit
 
 class ViewController: UIViewController, UIViewControllerPreviewingDelegate {
     
+    var context : UIViewControllerPreviewing?
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        unregisterForPreviewing(withContext: self.context!)
+    }
+    
     deinit {
         print("deinit ViewController")
     }
@@ -29,12 +37,12 @@ class ViewController: UIViewController, UIViewControllerPreviewingDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        registerForPreviewing(with: self, sourceView: self.view!)
-        
-        
+        self.context = registerForPreviewing(with: self, sourceView: self.view!)
     }
     
     @IBAction func buttonPressed(_ sender: Any) {
+        unregisterForPreviewing(withContext: self.context!)
+        
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyBoard.instantiateViewController(withIdentifier: "ViewController")
         
